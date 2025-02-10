@@ -22,6 +22,7 @@ import frc.robot.commands.BumpDown;
 import frc.robot.commands.ChangePipeline;
 import frc.robot.commands.ManualArmCommand;
 import frc.robot.commands.ManualElevatorCommand;
+import frc.robot.commands.TrackTagLeft;
 import frc.robot.commands.TransferPosition;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -59,6 +60,7 @@ public class RobotContainer
   private final BumpDown bumpDown;
   private final ArmReady armReady;
   private final ChangePipeline changePipeline;
+  private final TrackTagLeft trackLeft;
 
   private final SequentialCommandGroup autoTransfer;
 
@@ -105,6 +107,7 @@ public class RobotContainer
     bumpDown = new BumpDown(elevator, arm, operatorXbox);
     armReady = new ArmReady(elevator, arm, operatorXbox);
     changePipeline = new ChangePipeline(limelight, driverXbox);
+    trackLeft = new TrackTagLeft(limelight, drivebase, driverXbox);
 
     autoTransfer = new SequentialCommandGroup(bumpDown, armReady); //sequential command group for auto transfer
 
@@ -136,7 +139,7 @@ public class RobotContainer
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       //new JoystickButton(driverXbox, 8).onTrue(new InstantCommand(drivebase::zeroGyro));
       driverXbox.back().onTrue(Commands.none());
-      driverXbox.leftBumper().onTrue(Commands.none());
+      driverXbox.leftBumper().onTrue(trackLeft);
       driverXbox.rightBumper().onTrue(Commands.none());
 
       //operatorXbox.back().onTrue(autoTransfer); //run sequence of 

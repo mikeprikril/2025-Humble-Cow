@@ -31,11 +31,11 @@ public class ChangePipeline extends Command {
   @Override
   public void execute() {
 
-    if (driverJoystick.getHID().getLeftBumperButton() == true) {
+    if (driverJoystick.getHID().getAButton() == true) {
       limelight.SetPipeline(Constants.LimelightConstants.AprilTagPipeline);
     }
 
-    if (driverJoystick.getHID().getRightBumperButton() == true) {
+    if (driverJoystick.getHID().getBButton() == true) {
       limelight.SetPipeline(Constants.LimelightConstants.ColorPipeline);
     }
   }

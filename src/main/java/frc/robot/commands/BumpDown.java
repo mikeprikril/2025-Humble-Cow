@@ -37,10 +37,16 @@ public class BumpDown extends Command {
   @Override
   public void execute() {
     
-  //is elevator above target
+  if (arm.GetArmEncoderPosition() > Constants.ArmConstants.ArmAtTray){
+    arm.AutoArmMove(Constants.ArmConstants.ArmUpSpeed);
+    elevator.StopElevator();
+    arm.StopGripper();
+  }
+ else {
       elevator.AutoElevator(Constants.ElevatorConstants.BumpDownSpeed);
       arm.GripperIntake();
       arm.StopArm();
+  }  
   }
 
   // Called once the command ends or is interrupted.

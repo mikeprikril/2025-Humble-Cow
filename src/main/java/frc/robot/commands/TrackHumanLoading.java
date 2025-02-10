@@ -13,27 +13,27 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TrackTagLeft extends Command {
+public class TrackHumanLoading extends Command {
   /** Creates a new TrackTagLeft. */
   public final Limelight limelight;
   public final SwerveSubsystem swerveDrive;
   
   public final CommandXboxController driverJoystick;
 
-  private final ChassisSpeeds tagSpeeds;
+  private final ChassisSpeeds loadingSpeeds;
   private final Timer timer;
 
   public double angleTarget;
   public double tagNumber;
   
-  public TrackTagLeft(Limelight m_limelight, SwerveSubsystem m_swerveDrive, CommandXboxController m_driverJoystick) {
+  public TrackHumanLoading(Limelight m_limelight, SwerveSubsystem m_swerveDrive, CommandXboxController m_driverJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     limelight = m_limelight;
     swerveDrive = m_swerveDrive;
     driverJoystick = m_driverJoystick;
 
     timer = new Timer();
-    tagSpeeds = new ChassisSpeeds(0,0,0);
+    loadingSpeeds = new ChassisSpeeds(0,0,0);
 
     addRequirements(limelight, swerveDrive);
   }
@@ -51,36 +51,24 @@ public class TrackTagLeft extends Command {
   public void execute() {
     tagNumber = limelight.ReefTagID();
 
-    if (tagNumber == 18 || tagNumber == 7){
-      angleTarget = 0;
+    if (tagNumber == 12 || tagNumber == 2){
+      angleTarget = 225;
     }
-    if (tagNumber == 17 || tagNumber == 8){
-      angleTarget = 60;
-    }
-    if (tagNumber == 22 || tagNumber == 9){
-      angleTarget = 120;
-    }
-    if (tagNumber == 21 || tagNumber == 10){
-      angleTarget = 180;
-    }
-    if (tagNumber == 20 || tagNumber == 11){
-      angleTarget = 240;
-    }
-    if (tagNumber == 19 || tagNumber == 6){
-      angleTarget = 300;
+    if (tagNumber == 13 || tagNumber == 1){
+      angleTarget = 135;
     }
 
     //define forward speed
-    tagSpeeds.vxMetersPerSecond = Constants.DrivebaseConstants.ReefForwardSpeed;
+    loadingSpeeds.vxMetersPerSecond = -driverJoystick.getLeftY()*Constants.DrivebaseConstants.HumanLoadingKp; //pass values from joystick
 
     //define side-to-side speed
-    tagSpeeds.vyMetersPerSecond = Constants.DrivebaseConstants.ReefKp*(limelight.ReefTagX()+Constants.DrivebaseConstants.OffsetForLeft); //multiply Limelight value by P factor
+    loadingSpeeds.vyMetersPerSecond = -driverJoystick.getLeftX()*Constants.DrivebaseConstants.HumanLoadingKp; //pass values from joystick
     
     //define rotational speed
-    tagSpeeds.omegaRadiansPerSecond = (angleTarget - swerveDrive.getHeading().getDegrees())*Constants.DrivebaseConstants.ReefSpinKp;
+    loadingSpeeds.omegaRadiansPerSecond = (angleTarget - swerveDrive.getHeading().getDegrees())*Constants.DrivebaseConstants.ReefSpinKp;
 
     //send values to swervedrive
-    swerveDrive.drive(tagSpeeds);
+    swerveDrive.drive(loadingSpeeds);
   }
 
   // Called once the command ends or is interrupted.
@@ -90,6 +78,6 @@ public class TrackTagLeft extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !driverJoystick.getHID().getLeftBumperButton(); //stop once left bumper released
+    return false;
   }
 }

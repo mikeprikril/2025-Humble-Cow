@@ -42,6 +42,8 @@ public final class Constants
     public static final double ReefSpinKp = -0.05;
     public static final double OffsetForLeft = -6;
     public static final double OffsetForRight = 6;
+
+    public static final double HumanLoadingKp = 3; //max speed in m/s when driving to human station
   }
 
   public static final class LimelightConstants

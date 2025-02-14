@@ -61,10 +61,10 @@ public class ArmSubsytem extends SubsystemBase {
     else if(armCommandSpeed > 0 && -shoulderEncoder.getPosition() < Constants.ArmConstants.AlmostUpValue && armTopLimitSwitch.get() == true){//go up slow if close to upper limit
       armMotor.set(Constants.ArmConstants.SlowDown*armCommandSpeed);
     }
-    else if(armCommandSpeed < 0 && -shoulderEncoder.getPosition() > Constants.ArmConstants.AlmostDownValue && -shoulderEncoder.getPosition() < Constants.ArmConstants.ArmAtTray){//go up slow if close to low limit
+    else if(armCommandSpeed < 0 && -shoulderEncoder.getPosition() > Constants.ArmConstants.AlmostDownValue && -shoulderEncoder.getPosition() < Constants.ArmConstants.ArmAtLoading){//go up slow if close to low limit
       armMotor.set(Constants.ArmConstants.SlowDown*armCommandSpeed);
     }
-    else if(armCommandSpeed < 0 && -shoulderEncoder.getPosition() > Constants.ArmConstants.ArmAtTray){//stop if arm is at tray
+    else if(armCommandSpeed < 0 && -shoulderEncoder.getPosition() > Constants.ArmConstants.ArmAtLoading){//stop if arm is at loading
       armMotor.stopMotor();
     }
     else if (armCommandSpeed > -Constants.ElevatorConstants.JoystickDeadband && armCommandSpeed < Constants.ElevatorConstants.JoystickDeadband){
@@ -107,7 +107,7 @@ public class ArmSubsytem extends SubsystemBase {
    }
     
   public boolean GetBottomLimitSwitch(){
-    return -shoulderEncoder.getPosition() > Constants.ArmConstants.ArmAtTray;
+    return -shoulderEncoder.getPosition() > Constants.ArmConstants.ArmAtLoading;
     }
 
   public void GripperIntake(){
@@ -124,7 +124,7 @@ public class ArmSubsytem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm Encoder Value", -shoulderEncoder.getPosition()); //show arm encoder on dashboard
-    SmartDashboard.putBoolean("Arm Bottom Limit", -shoulderEncoder.getPosition() > Constants.ArmConstants.ArmAtTray); //true if enconcder shows we're down at bottom
+    SmartDashboard.putBoolean("Arm Bottom Limit", -shoulderEncoder.getPosition() > Constants.ArmConstants.ArmAtLoading); //true if enconcder shows we're down at bottom
     SmartDashboard.putBoolean("Arm Top Limit", !armTopLimitSwitch.get());
   }
 }

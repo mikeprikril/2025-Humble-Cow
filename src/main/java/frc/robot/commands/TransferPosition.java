@@ -45,10 +45,13 @@ public class TransferPosition extends Command {
       elevator.AutoElevator(Constants.ElevatorConstants.HoldElevatorSpeed); //if at target then hold
     }
 
-    if (arm.GetArmEncoderPosition() < (Constants.ArmConstants.AlmostDownValue)) { //arm is not near bottom
+    if (elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.SafeHeight){
+      arm.StopArm();
+    } 
+    else if (arm.GetArmEncoderPosition() < (Constants.ArmConstants.ArmAtLoading - Constants.ArmConstants.CloseSlow)) { //arm is not near bottom
         arm.AutoArmMove(Constants.ArmConstants.ArmDownSpeed);
       }
-    else if (arm.GetArmEncoderPosition() > (Constants.ArmConstants.AlmostDownValue) && arm.GetBottomLimitSwitch() == false){ //arm is near bottom but not on limit switch
+    else if (arm.GetArmEncoderPosition() > (Constants.ArmConstants.ArmAtLoading - Constants.ArmConstants.CloseSlow) && (arm.GetArmEncoderPosition() < Constants.ArmConstants.ArmAtLoading)){
         arm.AutoArmMove(Constants.ArmConstants.ArmDownSpeed*Constants.ArmConstants.SlowDown);
       }
     else {
@@ -69,11 +72,14 @@ public class TransferPosition extends Command {
     return !operatorJoystick.getHID().getXButton() // stop command if button let go
     || 
     (
-    (elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.TransferHeight - Constants.ElevatorConstants.deadband)) 
+    ((elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.TransferHeight - Constants.ElevatorConstants.deadband)) 
     &&
     (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.TransferHeight + Constants.ElevatorConstants.deadband)) 
+    )
     &&
-    arm.GetBottomLimitSwitch() == true
+    (
+      (arm.GetArmEncoderPosition() > Constants.ArmConstants.ArmAtLoading)
+    )
     ); 
     //end command when operator lets go of button or when both are at position
   }

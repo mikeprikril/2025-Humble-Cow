@@ -51,7 +51,7 @@ public class ArmReady extends Command {
 
     //arm movement
     if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() < Constants.ArmConstants.AlmostUpValue){
-      arm.AutoArmMove(Constants.ArmConstants.ArmUpSpeed);
+      arm.AutoArmMove(Constants.ArmConstants.ArmUpFast);
     }
     else if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() > Constants.ArmConstants.AlmostUpValue){
       arm.AutoArmMove(Constants.ArmConstants.ArmUpSpeed*Constants.ArmConstants.SlowDown);

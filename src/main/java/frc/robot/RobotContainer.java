@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -20,8 +22,10 @@ import frc.robot.commands.ArmReady;
 import frc.robot.commands.AutoElevatorCommand;
 import frc.robot.commands.BumpDown;
 import frc.robot.commands.ChangePipeline;
+import frc.robot.commands.GoBackUp;
 import frc.robot.commands.ManualArmCommand;
 import frc.robot.commands.ManualElevatorCommand;
+import frc.robot.commands.PickFromTrough;
 import frc.robot.commands.TrackTagLeft;
 import frc.robot.commands.TransferPosition;
 import frc.robot.subsystems.ArmSubsytem;
@@ -61,8 +65,10 @@ public class RobotContainer
   private final ArmReady armReady;
   private final ChangePipeline changePipeline;
   private final TrackTagLeft trackLeft;
+  private final PickFromTrough pick;
+  private final GoBackUp moveUp;
 
-  private final SequentialCommandGroup autoTransfer;
+  //private final SequentialCommandGroup autoTransfer;
 
 
   /**
@@ -108,8 +114,10 @@ public class RobotContainer
     armReady = new ArmReady(elevator, arm, operatorXbox);
     changePipeline = new ChangePipeline(limelight, driverXbox);
     trackLeft = new TrackTagLeft(limelight, drivebase, driverXbox);
+    pick = new PickFromTrough(elevator, arm, operatorXbox);
+    moveUp = new GoBackUp(elevator, arm, operatorXbox);
 
-    autoTransfer = new SequentialCommandGroup(bumpDown, armReady); //sequential command group for auto transfer
+    //autoTransfer = new SequentialCommandGroup(pick, moveUp); //sequential command group for auto transfer
 
     //Default Commands
 
@@ -122,12 +130,17 @@ public class RobotContainer
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
+    Command standardDrive = drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(-driverXbox.getLeftY(), OperatorConstants.DEADBAND),
+        () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), OperatorConstants.DEADBAND),
+        () -> MathUtil.applyDeadband(Constants.DrivebaseConstants.SlowDownTurn*-driverXbox.getRightX(), OperatorConstants.DEADBAND));
+
     Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
     
     //Default Commands for each subsystem
-    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    drivebase.setDefaultCommand(standardDrive);
     elevator.setDefaultCommand(manualElevator);
     arm.setDefaultCommand(manualArm);
     limelight.setDefaultCommand(changePipeline);
@@ -144,8 +157,10 @@ public class RobotContainer
 
       //operatorXbox.back().onTrue(autoTransfer); //run sequence of 
       operatorXbox.x().onTrue(transfer); //move to transfer position (human loading) when holding X
-      operatorXbox.y().onTrue(bumpDown); //grab coral from trough when holding Y
-      operatorXbox.a().onTrue(armReady); //move arm and elevator to scoring position when holding A
+      operatorXbox.y().onTrue(pick); //grab coral from trough when holding Y
+      operatorXbox.b().onTrue(moveUp);
+
+      //operatorXbox.a().onTrue(armReady); //move arm and elevator to scoring position when holding A
 
       //new JoystickButton(panel, 1).onTrue(transfer); //use this when we get the panel control working
 

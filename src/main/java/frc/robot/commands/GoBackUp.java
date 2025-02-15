@@ -35,7 +35,7 @@ public class GoBackUp extends Command {
   @Override
   public void execute() {
     if (elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.TransferHeight){
-      elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed);
+      elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed/2);
       arm.AutoArmMove(Constants.ArmConstants.ArmUpSpeed*.25);//arm up at half speed
     }
     else{
@@ -51,6 +51,6 @@ public class GoBackUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getBButton();
+    return !operatorJoystick.getHID().getYButton();
   }
 }

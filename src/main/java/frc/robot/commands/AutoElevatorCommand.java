@@ -30,10 +30,10 @@ public class AutoElevatorCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.L4Height - Constants.ElevatorConstants.deadband)) { //is elevator below target
+    if (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.UpLimit - Constants.ElevatorConstants.deadband)) { //is elevator below target
       elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed);
     }
-    else if (elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.L4Height + Constants.ElevatorConstants.deadband)){ //is elevator above target
+    else if (elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.UpLimit + Constants.ElevatorConstants.deadband)){ //is elevator above target
       elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed);
     }
     else {

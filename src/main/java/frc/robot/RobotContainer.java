@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmReady;
+import frc.robot.commands.MoveToL2;
+import frc.robot.commands.MoveToL3;
+import frc.robot.commands.MoveToL4;
 import frc.robot.commands.AutoElevatorCommand;
 import frc.robot.commands.BumpDown;
 import frc.robot.commands.ChangePipeline;
@@ -28,6 +30,7 @@ import frc.robot.commands.ManualElevatorCommand;
 import frc.robot.commands.PickFromTrough;
 import frc.robot.commands.TrackTagLeft;
 import frc.robot.commands.TransferPosition;
+import frc.robot.commands.ChangeTurningCommand;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.Limelight;
@@ -43,15 +46,15 @@ import swervelib.SwerveInputStream;
 public class RobotContainer
 {
   // Joysticks
-  final CommandXboxController driverXbox = new CommandXboxController(Constants.OperatorConstants.DriverUSBPort);
-  final CommandXboxController operatorXbox = new CommandXboxController(Constants.OperatorConstants.OperatorUSBPort);
-  final Joystick panel = new Joystick(Constants.OperatorConstants.PanelUSBPort);
+  public static final CommandXboxController driverXbox = new CommandXboxController(Constants.OperatorConstants.DriverUSBPort);
+  public static final CommandXboxController operatorXbox = new CommandXboxController(Constants.OperatorConstants.OperatorUSBPort);
+  public static final Joystick panel = new Joystick(Constants.OperatorConstants.PanelUSBPort);
 
   //Auto Mode Chooser
   private final SendableChooser<Command> autoChooser;
 
   // Subsystems
-  private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"swerve/neo"));
+  public static final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"swerve/neo"));
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final ArmSubsytem arm = new ArmSubsytem();
   private final Limelight limelight = new Limelight();
@@ -62,13 +65,16 @@ public class RobotContainer
   private final AutoElevatorCommand autoElevator;;
   private final TransferPosition transfer;
   private final BumpDown bumpDown;
-  private final ArmReady armReady;
+  private final MoveToL2 moveToL2;
+  private final MoveToL3 moveToL3;
+  private final MoveToL4 moveToL4;
   private final ChangePipeline changePipeline;
   private final TrackTagLeft trackLeft;
   private final PickFromTrough pick;
   private final GoBackUp moveUp;
+  private final ChangeTurningCommand changeTurning;
 
-  //private final SequentialCommandGroup autoTransfer;
+  private final SequentialCommandGroup autoTransfer;
 
 
   /**
@@ -111,13 +117,16 @@ public class RobotContainer
     autoElevator = new AutoElevatorCommand(elevator, operatorXbox);
     transfer = new TransferPosition(elevator, arm, operatorXbox);
     bumpDown = new BumpDown(elevator, arm, operatorXbox);
-    armReady = new ArmReady(elevator, arm, operatorXbox);
+    moveToL2 = new MoveToL2(elevator, arm, operatorXbox);
+    moveToL3 = new MoveToL3(elevator, arm, operatorXbox);
+    moveToL4 = new MoveToL4(elevator, arm, operatorXbox);
     changePipeline = new ChangePipeline(limelight, driverXbox);
     trackLeft = new TrackTagLeft(limelight, drivebase, driverXbox);
     pick = new PickFromTrough(elevator, arm, operatorXbox);
     moveUp = new GoBackUp(elevator, arm, operatorXbox);
+    changeTurning = new ChangeTurningCommand(drivebase, driverXbox);
 
-    //autoTransfer = new SequentialCommandGroup(pick, moveUp); //sequential command group for auto transfer
+    autoTransfer = new SequentialCommandGroup(pick, moveUp); //sequential command group for auto transfer
 
     //Default Commands
 
@@ -157,8 +166,10 @@ public class RobotContainer
 
       //operatorXbox.back().onTrue(autoTransfer); //run sequence of 
       operatorXbox.x().onTrue(transfer); //move to transfer position (human loading) when holding X
-      operatorXbox.y().onTrue(pick); //grab coral from trough when holding Y
-      operatorXbox.b().onTrue(moveUp);
+      operatorXbox.y().onTrue(autoTransfer); //grab coral from trough when holding Y
+      //operatorXbox.b().onTrue(moveUp);
+      operatorXbox.a().onTrue(moveToL4);
+      operatorXbox.b().onTrue(moveToL3);
 
       //operatorXbox.a().onTrue(armReady); //move arm and elevator to scoring position when holding A
 

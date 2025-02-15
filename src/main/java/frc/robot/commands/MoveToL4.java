@@ -12,14 +12,14 @@ import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ArmReady extends Command {
+public class MoveToL4 extends Command {
   /** Creates a new ArmReady. */
   public final ElevatorSubsystem elevator;
   public final ArmSubsytem arm;
   public final CommandXboxController operatorJoystick;
   public final Timer timer;
  
-  public ArmReady(ElevatorSubsystem m_elevator, ArmSubsytem m_arm, CommandXboxController m_operatorJoystick) {
+  public MoveToL4(ElevatorSubsystem m_elevator, ArmSubsytem m_arm, CommandXboxController m_operatorJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     elevator = m_elevator;
     arm = m_arm;
@@ -44,16 +44,16 @@ public class ArmReady extends Command {
     if (timer.get() < Constants.ElevatorConstants.ResetArmDelay){
       elevator.StopElevator();
     }
-    else if (timer.get() > Constants.ElevatorConstants.ResetArmDelay && elevator.GetElevatorEncoderPosition() > Constants.ElevatorConstants.L3Height){
-      elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed);
+    else if (timer.get() > Constants.ElevatorConstants.ResetArmDelay && elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.UpLimit){
+      elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed);
     }
     else elevator.StopElevator();
 
     //arm movement
-    if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() < Constants.ArmConstants.AlmostUpValue){
+    if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() > Constants.ArmConstants.AlmostUpValue){
       arm.AutoArmMove(Constants.ArmConstants.ArmUpFast);
     }
-    else if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() > Constants.ArmConstants.AlmostUpValue){
+    else if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() < Constants.ArmConstants.AlmostUpValue){
       arm.AutoArmMove(Constants.ArmConstants.ArmUpSpeed*Constants.ArmConstants.SlowDown);
     }
     else arm.StopArm();
@@ -73,6 +73,6 @@ public class ArmReady extends Command {
   public boolean isFinished() {
     return !operatorJoystick.getHID().getAButton() //change to back button when running for real, stop command if button let go
     ||
-    (elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.L3Height && arm.GetTopLimitSwitch());
+    (elevator.GetElevatorEncoderPosition() > Constants.ElevatorConstants.UpLimit && arm.GetTopLimitSwitch());
   }
 }

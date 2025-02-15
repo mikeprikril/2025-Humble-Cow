@@ -44,7 +44,7 @@ public final class Constants
     public static final double OffsetForRight = 6;
 
     public static final double HumanLoadingKp = 3; //max speed in m/s when driving to human station
-
+    public static final boolean turningMode = true;
     public static final double SlowDownTurn = .8; //slow down turning speed
   }
 
@@ -75,21 +75,20 @@ public final class Constants
     public static final int elevatorTopLimitSwitchIO = 2;
 
     public static final int AlmostDownValue = 8; //slow down when close to bottom
-    public static final int AlmostUpValue = 61; //slow down when close to top
-    public static final int UpLimit = 65; //top limit for elevator
+    public static final double AlmostUpValue = 59; //slow down when close to top
+    public static final double UpLimit = 64; //top limit for elevator
     public static final double SlowDown = 0.2; //slow down to 20% if close to limit
 
-    public static final double deadband = 2;
-    public static final double TransferHeight = 55;
-    public static final double SafeHeight = 45; //when can arm start moving down in auto feed
-    public static final double troughHeight = 36.5;
-    public static final double L1Height = 30;
-    public static final double L2Height = 40;
-    public static final double L3Height = 45;
-    public static final double L4Height = 50;
+    public static final double deadband = 1.5;
+    public static final double TransferHeight = 44;
+    public static final double SafeHeight = 35; //when can arm start moving down in auto feed
+    public static final double troughHeight = 38;
+    public static final double L1Height = 38;
+    public static final double L2Height = 5.6;
+    public static final double L3Height = 25.1;
     public static final double AutoUpSpeed = -.4;
     public static final double AutoDownSpeed = 0.3;
-    public static final double BumpDownSpeed = 0.2;
+    public static final double BumpDownSpeed = 0.1;
     public static final double HoldElevatorSpeed = 0;
 
     public static final int TransferButton = 1;
@@ -98,7 +97,7 @@ public final class Constants
     public static final double ResetArmDelay = 0.5;
     public static final int L4JoystickButton = 4;
 
-    public static final double JoystickDeadband = 0.05;
+    public static final double JoystickDeadband = 0.1;
     public static final double goSlow = .65; //slow down elevator joystick input
   }
 
@@ -113,14 +112,15 @@ public final class Constants
     public static final int AlmostUpValue = 4; //slow down when close to top
     public static final int AlmostDownValue = 58; //slow down when close to tray at bottom
     public static final double ArmVertical = 55.5; //value of encoder when arm is vertically down at tray
-    public static final int ArmAtLoading = 68; //arm back against elevator to load from human
+    public static final int ArmAtLoading = 72; //arm back against elevator to load from human
     public static final int CloseSlow = 10; //when you get near the endpoint slow down
     public static final int deadband = 1; //arm location deadband
     public static final double SlowDown = 0.2; //slow down by 20% if close to limit
 
-    public static final double ArmDownSpeed = -.5;
-    public static final double ArmUpSpeed = .5;
+    public static final double ArmDownSpeed = -.3;
+    public static final double ArmUpSpeed = .4;
     public static final double ArmUpFast = 0.8;
+    public static final double armFlat = 31;
 
     public static final double GripperInSpeed = 1;
     public static final double GripperOutSpeed = -1;

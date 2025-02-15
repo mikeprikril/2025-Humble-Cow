@@ -51,6 +51,8 @@ public class PickFromTrough extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getYButton();
+    return !operatorJoystick.getHID().getYButton()
+    ||
+    elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.troughHeight;
   }
 }

@@ -41,16 +41,19 @@ public class MoveToL4 extends Command {
   @Override
   public void execute() {
     //elevator movement
-    if (timer.get() < Constants.ElevatorConstants.ResetArmDelay){
+    if (arm.GetArmEncoderPosition() > Constants.ArmConstants.armFlat){
       elevator.StopElevator();
     }
-    else if (timer.get() > Constants.ElevatorConstants.ResetArmDelay && elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.UpLimit){
+    else if (elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.AlmostUpValue){
       elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed);
+    }
+    else if (elevator.GetElevatorEncoderPosition() > Constants.ElevatorConstants.AlmostUpValue && elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.UpLimit){
+      elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed*.3);
     }
     else elevator.StopElevator();
 
     //arm movement
-    if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() > Constants.ArmConstants.AlmostUpValue){
+    if (arm.GetArmEncoderPosition() > Constants.ArmConstants.AlmostUpValue){
       arm.AutoArmMove(Constants.ArmConstants.ArmUpFast);
     }
     else if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() < Constants.ArmConstants.AlmostUpValue){
@@ -71,8 +74,6 @@ public class MoveToL4 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getAButton() //change to back button when running for real, stop command if button let go
-    ||
-    (elevator.GetElevatorEncoderPosition() > Constants.ElevatorConstants.UpLimit && arm.GetTopLimitSwitch());
+    return !operatorJoystick.getHID().getAButton(); //change to back button when running for real, stop command if button let go
   }
 }

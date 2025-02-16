@@ -69,8 +69,8 @@ public class TransferPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getXButton() // stop command if button let go
-    || 
+    return !operatorJoystick.getHID().getXButton(); // stop command if button let go
+    /*|| 
     (
     ((elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.TransferHeight - Constants.ElevatorConstants.deadband)) 
     &&
@@ -80,7 +80,6 @@ public class TransferPosition extends Command {
     (
       (arm.GetArmEncoderPosition() > Constants.ArmConstants.ArmAtLoading)
     )
-    ); 
-    //end command when operator lets go of button or when both are at position
+    ); */
   }
 }

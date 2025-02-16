@@ -89,7 +89,7 @@ public final class Constants
     public static final double AutoUpSpeed = -.4;
     public static final double AutoDownSpeed = 0.3;
     public static final double BumpDownSpeed = 0.1;
-    public static final double HoldElevatorSpeed = 0;
+    public static final double HoldElevatorSpeed = -0.05;
 
     public static final int TransferButton = 1;
     public static final int BumpDownTestButton = 2;
@@ -129,6 +129,8 @@ public final class Constants
     public static final int gripperOutButton = 6;
 
     public static final double goSlow = .8; //slow down arm joystick input
+
+    public static final double RateLimit = 2; //arm will get to full speed in 1 / this time in seconds
   }
 
 }

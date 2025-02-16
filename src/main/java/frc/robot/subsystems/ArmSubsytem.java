@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,6 +28,8 @@ public class ArmSubsytem extends SubsystemBase {
   WPI_VictorSPX gripperWheel;
 
   SparkMaxConfig armMotorConfig = new SparkMaxConfig();
+
+  SlewRateLimiter rateLimiter;
 
   //DigitalInput armBottomLimitSwitch;
   DigitalInput armTopLimitSwitch;
@@ -52,6 +55,8 @@ public class ArmSubsytem extends SubsystemBase {
 
     //armBottomLimitSwitch = new DigitalInput(Constants.ArmConstants.armBottomLimitSwitchIO);
     armTopLimitSwitch = new DigitalInput(Constants.ArmConstants.armTopLimitSwitchIO);
+
+    rateLimiter = new SlewRateLimiter(Constants.ArmConstants.RateLimit);
   }
 
     public void ArmJoystickControl(double armCommandSpeed){
@@ -71,7 +76,7 @@ public class ArmSubsytem extends SubsystemBase {
       armMotor.stopMotor();
     }
     else{
-      armMotor.set(armCommandSpeed*Constants.ArmConstants.goSlow); //this assumes motor up is pulling back on joystick (positive values)
+      armMotor.set(rateLimiter.calculate(armCommandSpeed*Constants.ArmConstants.goSlow)); //this assumes motor up is pulling back on joystick (positive values)
     }
 
     if (armTopLimitSwitch.get() == false){

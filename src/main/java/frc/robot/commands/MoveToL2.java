@@ -47,11 +47,11 @@ public class MoveToL2 extends Command {
     else if (arm.GetArmEncoderPosition() < Constants.ArmConstants.armFlat && elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.L2Height + Constants.ElevatorConstants.deadband)){
       elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed);
     }
-    else if (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.L3Height - Constants.ElevatorConstants.deadband)){
+    else if (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.L2Height - Constants.ElevatorConstants.deadband)){
       elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed*.2);
     }
-  
-    else elevator.StopElevator();
+    //else elevator.StopElevator();
+    else elevator.AutoElevator(Constants.ElevatorConstants.HoldElevatorSpeed);
 
     //arm movement
     if (arm.GetTopLimitSwitch() == false && arm.GetArmEncoderPosition() > Constants.ArmConstants.AlmostUpValue){
@@ -75,8 +75,6 @@ public class MoveToL2 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getBButton() //change to back button when running for real, stop command if button let go
-    ||
-    (elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.L2Height);
+    return !operatorJoystick.getHID().getBButton(); //stop command if button let go
   }
 }

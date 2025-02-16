@@ -13,7 +13,7 @@ public class ManualArmCommand extends Command {
   /** Creates a new ManualElevatorCommand. */
   public final ArmSubsytem arm;
   public final CommandXboxController armJoystick;
-
+ 
   public ManualArmCommand(ArmSubsytem m_arm, CommandXboxController m_armController) {
   arm = m_arm;
   armJoystick = m_armController;

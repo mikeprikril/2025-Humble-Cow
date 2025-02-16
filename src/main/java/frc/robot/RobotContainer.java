@@ -167,7 +167,7 @@ public class RobotContainer
       //operatorXbox.back().onTrue(autoTransfer); //run sequence of 
       operatorXbox.x().onTrue(transfer); //move to transfer position (human loading) when holding X
       operatorXbox.y().onTrue(autoTransfer); //grab coral from trough when holding Y
-      //operatorXbox.b().onTrue(moveUp);
+  
       operatorXbox.a().onTrue(moveToL4);
       operatorXbox.b().onTrue(moveToL3);
 

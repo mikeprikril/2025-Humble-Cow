@@ -41,8 +41,8 @@ public class ArmSubsytem extends SubsystemBase {
     armMotorConfig.inverted(false) //dont invert shoulder motor
     .idleMode(IdleMode.kBrake); //keep brake on
     armMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder) //define encoder for control (might have to change)
-    .pid(.0001, 0, 0) //PID constants
-    .outputRange(-.3, 1); //arm PID range
+    .pid(.01, 0, 0) //PID constants
+    .outputRange(-.3, .5); //arm PID range
 
     armMotor = new SparkMax(Constants.ArmConstants.armMotorCANID, MotorType.kBrushless);
     armMotor.configure(armMotorConfig, null, null);
@@ -85,7 +85,7 @@ public class ArmSubsytem extends SubsystemBase {
   }
 
   public void AutoArmMove (double requestSpeed){
-    armMotor.set(requestSpeed);
+    armMotor.set(rateLimiter.calculate(requestSpeed));
   }
 
   public void PIDArm(double ArmSetpoint){

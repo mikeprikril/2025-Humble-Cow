@@ -17,12 +17,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.MoveToL2;
 import frc.robot.commands.MoveToL3;
 import frc.robot.commands.MoveToL4;
-import frc.robot.commands.AutoElevatorCommand;
-import frc.robot.commands.BumpDown;
 import frc.robot.commands.ChangePipeline;
 import frc.robot.commands.GoBackUp;
 import frc.robot.commands.ManualArmCommand;
@@ -65,9 +64,7 @@ public class RobotContainer
   //Commands
   private final ManualElevatorCommand manualElevator;
   private final ManualArmCommand manualArm;
-  private final AutoElevatorCommand autoElevator;
   private final TransferPosition transfer;
-  private final BumpDown bumpDown;
   private final MoveToL2 moveToL2;
   private final MoveToL3 moveToL3;
   private final MoveToL4 moveToL4;
@@ -119,21 +116,18 @@ public class RobotContainer
     //Commands
     manualElevator = new ManualElevatorCommand(elevator, operatorXbox);
     manualArm = new ManualArmCommand(arm, operatorXbox);
-    autoElevator = new AutoElevatorCommand(elevator, operatorXbox);
-    transfer = new TransferPosition(elevator, arm, operatorXbox);
-    bumpDown = new BumpDown(elevator, arm, operatorXbox);
-    moveToL2 = new MoveToL2(elevator, arm, operatorXbox);
-    moveToL3 = new MoveToL3(elevator, arm, operatorXbox);
-    moveToL4 = new MoveToL4(elevator, arm, operatorXbox);
+
     changePipeline = new ChangePipeline(limelight, driverXbox);
     trackLeft = new TrackTagLeft(limelight, drivebase, driverXbox);
-    pick = new PickFromTrough(elevator, arm, operatorXbox);
-    moveUp = new GoBackUp(elevator, arm, operatorXbox);
     changeTurning = new ChangeTurningCommand(drivebase, driverXbox);
 
+    transfer = new TransferPosition(elevator, arm, panel);
+    moveToL2 = new MoveToL2(elevator, arm, panel);
+    moveToL3 = new MoveToL3(elevator, arm, panel);
+    moveToL4 = new MoveToL4(elevator, arm, panel);
+    pick = new PickFromTrough(elevator, arm, panel);
+    moveUp = new GoBackUp(elevator, arm, panel);
     autoTransfer = new SequentialCommandGroup(pick, moveUp); //sequential command group for auto transfer
-
-    //Default Commands
 
     //Automode Chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -169,12 +163,16 @@ public class RobotContainer
       driverXbox.leftBumper().onTrue(trackLeft);
       driverXbox.rightBumper().onTrue(Commands.none());
 
-      //operatorXbox.back().onTrue(autoTransfer); //run sequence of 
-      operatorXbox.x().onTrue(transfer); //move to transfer position (human loading) when holding X
-      operatorXbox.y().onTrue(autoTransfer); //grab coral from trough when holding Y
-  
-      operatorXbox.a().onTrue(moveToL4);
-      operatorXbox.b().onTrue(moveToL3);
+      new JoystickButton(panel, Constants.OperatorConstants.CoralStationButton).onTrue(transfer);
+      new JoystickButton(panel, Constants.OperatorConstants.GetCoralButton).onTrue(autoTransfer);
+      //new JoystickButton(panel, Constants.OperatorConstants.L1Button).onTrue(moveToL1);
+      new JoystickButton(panel, Constants.OperatorConstants.L2Button).onTrue(moveToL2);
+      new JoystickButton(panel, Constants.OperatorConstants.L3Button).onTrue(moveToL3);
+      new JoystickButton(panel, Constants.OperatorConstants.L4Button).onTrue(moveToL4);
+      //operatorXbox.x().onTrue(transfer); //move to transfer position (human loading) when holding X
+      //operatorXbox.y().onTrue(autoTransfer); //grab coral from trough when holding Y
+      //operatorXbox.a().onTrue(moveToL4);
+      //operatorXbox.b().onTrue(moveToL3);
 
       //operatorXbox.a().onTrue(armReady); //move arm and elevator to scoring position when holding A
 

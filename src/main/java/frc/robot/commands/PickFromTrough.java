@@ -4,8 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -15,13 +16,15 @@ public class PickFromTrough extends Command {
   /** Creates a new PickFromTrough. */
   public final ElevatorSubsystem elevator;
   public final ArmSubsytem arm;
-  public final CommandXboxController operatorJoystick;
+  public final Joystick panel;
+  //public final CommandXboxController operatorJoystick;
   
-  public PickFromTrough(ElevatorSubsystem m_elevator, ArmSubsytem m_arm, CommandXboxController m_operatorJoystick) {
+  public PickFromTrough(ElevatorSubsystem m_elevator, ArmSubsytem m_arm, Joystick m_panel) {
     // Use addRequirements() here to declare subsystem dependencies.
     elevator = m_elevator;
     arm = m_arm;
-    operatorJoystick = m_operatorJoystick;
+    panel = m_panel;
+    //operatorJoystick = m_operatorJoystick;
 
     addRequirements(elevator, arm);
 
@@ -51,7 +54,8 @@ public class PickFromTrough extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getYButton()
+    return !panel.getRawButton(Constants.OperatorConstants.GetCoralButton)
+    //!operatorJoystick.getHID().getYButton()
     ||
     elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.troughHeight;
   }

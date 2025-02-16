@@ -63,8 +63,18 @@ public final class Constants
 
     //Controller USB ports
     public static final int DriverUSBPort = 0;
-    public static final int PanelUSBPort = 1;
+    public static final int PanelUSBPort = 3;
     public static final int OperatorUSBPort = 2;
+
+    //Panel Buttons
+    public static final int L1Button = 1;
+    public static final int L2Button = 2;
+    public static final int L3Button = 3;
+    public static final int L4Button = 4;
+    public static final int CoralStationButton = 8;
+    public static final int GetCoralButton = 7;
+    public static final int TuckArmButton= 6;
+
   }
 
   public static class ElevatorConstants
@@ -114,14 +124,15 @@ public final class Constants
     public static final int AlmostDownValue = 58; //slow down when close to tray at bottom
     public static final double ArmVertical = 55.5; //value of encoder when arm is vertically down at tray
     public static final int ArmAtLoading = 72; //arm back against elevator to load from human
+    public static final int ArmL1 = 28;
     public static final int CloseSlow = 5; //when you get near the endpoint slow down
-    public static final int deadband = 1; //arm location deadband
+    public static final double deadband = 1.5; //arm location deadband
     public static final double SlowDown = 0.2; //slow down by 20% if close to limit
 
-    public static final double ArmDownSpeed = -.3;
-    public static final double ArmUpSpeed = .4;
+    public static final double ArmDownSpeed = -0.5;
+    public static final double ArmUpSpeed = 0.5;
     public static final double ArmUpFast = 0.8;
-    public static final double armFlat = 31;
+    public static final double armFlat = 35;
 
     public static final double GripperInSpeed = 1;
     public static final double GripperOutSpeed = -1;
@@ -131,7 +142,7 @@ public final class Constants
 
     public static final double goSlow = .8; //slow down arm joystick input
 
-    public static final double RateLimit = 2; //arm will get to full speed in 1 / this time in seconds
+    public static final double RateLimit = 3; //arm will get to full speed in 1 / this time in seconds
   }
 
 }

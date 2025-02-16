@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -21,8 +23,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   SparkMax leftElevatorMotor;
   SparkMax rightElevatorMotor;
 
-  //SparkMaxConfig leftMotorConfig = new SparkMaxConfig();
-  //SparkMaxConfig rightMotorConfig = new SparkMaxConfig();
+  SparkMaxConfig leftMotorConfig = new SparkMaxConfig();
+  SparkMaxConfig rightMotorConfig = new SparkMaxConfig();
   RelativeEncoder elevatorEncoder;
 
   DigitalInput elevatorBottomLimitSwitch;
@@ -34,16 +36,12 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   public ElevatorSubsystem() {
     
-    /*leftMotorConfig.inverted(false) //dont invert left motor
+    leftMotorConfig.inverted(false) //dont invert left motor
     .idleMode(IdleMode.kBrake); //keep brake on
-    leftMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder) //define encoder for control (might have to change)
-    .pid(.0001, 0, 0) //PID constants
-    .outputRange(-1, 1); //PID elevator range
+    
+    rightMotorConfig.inverted(false) //don't invert because I power it in the opposite direction each time
+    .idleMode(IdleMode.kBrake); //keep brake on
 
-    rightMotorConfig.inverted(true) //invert right motor so it spins opposite way
-    .idleMode(IdleMode.kBrake) //keep brake on
-    .follow(leftElevatorMotor); //follow the left motor
-    */
     
     leftElevatorMotor = new SparkMax(Constants.ElevatorConstants.leftMotorCANID, MotorType.kBrushless);
     //leftElevatorMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);

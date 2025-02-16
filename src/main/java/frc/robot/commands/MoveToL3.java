@@ -4,9 +4,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -16,14 +17,16 @@ public class MoveToL3 extends Command {
   /** Creates a new ArmReady. */
   public final ElevatorSubsystem elevator;
   public final ArmSubsytem arm;
-  public final CommandXboxController operatorJoystick;
+  public final Joystick panel;
+  //public final CommandXboxController operatorJoystick;
   public final Timer timer;
  
-  public MoveToL3(ElevatorSubsystem m_elevator, ArmSubsytem m_arm, CommandXboxController m_operatorJoystick) {
+  public MoveToL3(ElevatorSubsystem m_elevator, ArmSubsytem m_arm, Joystick m_panel) {
     // Use addRequirements() here to declare subsystem dependencies.
     elevator = m_elevator;
     arm = m_arm;
-    operatorJoystick = m_operatorJoystick;
+    panel = m_panel;
+    //operatorJoystick = m_operatorJoystick;
     timer = new Timer();
 
 
@@ -75,6 +78,7 @@ public class MoveToL3 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !operatorJoystick.getHID().getBButton(); //change to back button when running for real, stop command if button let go
+    return !panel.getRawButton(Constants.OperatorConstants.L3Button);
+    //!operatorJoystick.getHID().getBButton(); //change to back button when running for real, stop command if button let go
   }
 }

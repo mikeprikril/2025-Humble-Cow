@@ -30,6 +30,9 @@ import frc.robot.commands.ManualElevatorCommand;
 import frc.robot.commands.PickFromTrough;
 import frc.robot.commands.TrackTagLeft;
 import frc.robot.commands.TransferPosition;
+import frc.robot.commands.AutoMode.AutoPick;
+import frc.robot.commands.AutoMode.AutoToL4;
+import frc.robot.commands.AutoMode.AutoTransferPosition;
 import frc.robot.commands.ChangeTurningCommand;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -62,7 +65,7 @@ public class RobotContainer
   //Commands
   private final ManualElevatorCommand manualElevator;
   private final ManualArmCommand manualArm;
-  private final AutoElevatorCommand autoElevator;;
+  private final AutoElevatorCommand autoElevator;
   private final TransferPosition transfer;
   private final BumpDown bumpDown;
   private final MoveToL2 moveToL2;
@@ -109,7 +112,9 @@ public class RobotContainer
   {
   
     //PathPlanner Named Commands
-    //NamedCommands.registerCommand("Fire From Subwoofer", new FireFromSubwoofer(m_arm, m_shooter));
+    NamedCommands.registerCommand("Move to L4", new AutoToL4(elevator, arm));
+    NamedCommands.registerCommand("Move to Human Loading", new AutoTransferPosition(elevator, arm));
+    NamedCommands.registerCommand("Grab Coral", new AutoPick(elevator, arm));
 
     //Commands
     manualElevator = new ManualElevatorCommand(elevator, operatorXbox);

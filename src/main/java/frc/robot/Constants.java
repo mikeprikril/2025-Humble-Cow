@@ -46,6 +46,7 @@ public final class Constants
     public static final double HumanLoadingKp = 3; //max speed in m/s when driving to human station
     public static final boolean turningMode = true;
     public static final double SlowDownTurn = .8; //slow down turning speed
+    public static final int LEDPWMPort = 1; //where are LEDs plugged in
   }
 
   public static final class LimelightConstants
@@ -113,7 +114,7 @@ public final class Constants
     public static final int AlmostDownValue = 58; //slow down when close to tray at bottom
     public static final double ArmVertical = 55.5; //value of encoder when arm is vertically down at tray
     public static final int ArmAtLoading = 72; //arm back against elevator to load from human
-    public static final int CloseSlow = 10; //when you get near the endpoint slow down
+    public static final int CloseSlow = 5; //when you get near the endpoint slow down
     public static final int deadband = 1; //arm location deadband
     public static final double SlowDown = 0.2; //slow down by 20% if close to limit
 

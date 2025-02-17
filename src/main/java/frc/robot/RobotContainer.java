@@ -29,6 +29,7 @@ import frc.robot.commands.ManualElevatorCommand;
 import frc.robot.commands.PickFromTrough;
 import frc.robot.commands.TrackTagLeft;
 import frc.robot.commands.TransferPosition;
+import frc.robot.commands.Tuck;
 import frc.robot.commands.AutoMode.AutoPick;
 import frc.robot.commands.AutoMode.AutoToL4;
 import frc.robot.commands.AutoMode.AutoTransferPosition;
@@ -68,6 +69,7 @@ public class RobotContainer
   private final MoveToL2 moveToL2;
   private final MoveToL3 moveToL3;
   private final MoveToL4 moveToL4;
+  private final Tuck tuck;
   private final ChangePipeline changePipeline;
   private final TrackTagLeft trackLeft;
   private final PickFromTrough pick;
@@ -125,6 +127,7 @@ public class RobotContainer
     moveToL2 = new MoveToL2(elevator, arm, panel);
     moveToL3 = new MoveToL3(elevator, arm, panel);
     moveToL4 = new MoveToL4(elevator, arm, panel);
+    tuck = new Tuck(elevator, arm, panel);
     pick = new PickFromTrough(elevator, arm, panel);
     moveUp = new GoBackUp(elevator, arm, panel);
     autoTransfer = new SequentialCommandGroup(pick, moveUp); //sequential command group for auto transfer
@@ -165,6 +168,7 @@ public class RobotContainer
 
       new JoystickButton(panel, Constants.OperatorConstants.CoralStationButton).onTrue(transfer);
       new JoystickButton(panel, Constants.OperatorConstants.GetCoralButton).onTrue(autoTransfer);
+      new JoystickButton(panel, Constants.OperatorConstants.TuckArmButton);
       //new JoystickButton(panel, Constants.OperatorConstants.L1Button).onTrue(moveToL1);
       new JoystickButton(panel, Constants.OperatorConstants.L2Button).onTrue(moveToL2);
       new JoystickButton(panel, Constants.OperatorConstants.L3Button).onTrue(moveToL3);

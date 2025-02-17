@@ -25,7 +25,9 @@ public class ChangePipeline extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    limelight.SetPipeline(Constants.LimelightConstants.AprilTagPipeline); //set to apriltag when robot starts
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

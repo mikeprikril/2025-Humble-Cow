@@ -9,13 +9,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TrackHumanLoading extends Command {
   /** Creates a new TrackTagLeft. */
-  public final Limelight limelight;
   public final SwerveSubsystem swerveDrive;
   
   public final CommandXboxController driverJoystick;
@@ -26,16 +24,15 @@ public class TrackHumanLoading extends Command {
   public double angleTarget;
   public double tagNumber;
   
-  public TrackHumanLoading(Limelight m_limelight, SwerveSubsystem m_swerveDrive, CommandXboxController m_driverJoystick) {
+  public TrackHumanLoading(SwerveSubsystem m_swerveDrive, CommandXboxController m_driverJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
-    limelight = m_limelight;
     swerveDrive = m_swerveDrive;
     driverJoystick = m_driverJoystick;
 
     timer = new Timer();
     loadingSpeeds = new ChassisSpeeds(0,0,0);
 
-    addRequirements(limelight, swerveDrive);
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
@@ -49,7 +46,7 @@ public class TrackHumanLoading extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    tagNumber = limelight.ReefTagID();
+    tagNumber = swerveDrive.GetTagID();
 
     if (tagNumber == 12 || tagNumber == 2){
       angleTarget = 225;

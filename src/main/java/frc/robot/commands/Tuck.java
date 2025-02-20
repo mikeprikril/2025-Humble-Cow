@@ -47,11 +47,11 @@ public class Tuck extends Command {
     if (arm.GetArmEncoderPosition() > Constants.ArmConstants.armFlat){
       elevator.StopElevator();
     }
-    else if (elevator.GetElevatorEncoderPosition() > Constants.ElevatorConstants.AlmostDownValue){
+    else if (arm.GetArmEncoderPosition() < Constants.ArmConstants.armFlat && elevator.GetElevatorEncoderPosition() > Constants.ElevatorConstants.AlmostDownValue){
       elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed);
     }
-    else if (elevator.GetBottomLimitSwitch() == false && elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.AlmostDownValue){
-      elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed*.3);
+    else if (arm.GetArmEncoderPosition() < Constants.ArmConstants.armFlat && elevator.GetBottomLimitSwitch() == true && elevator.GetElevatorEncoderPosition() < Constants.ElevatorConstants.AlmostDownValue){
+      elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed*.6);
     }
     else elevator.StopElevator();
 

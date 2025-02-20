@@ -47,7 +47,7 @@ public class MoveToL1 extends Command {
     if (arm.GetArmEncoderPosition() > Constants.ArmConstants.armFlat){
       elevator.StopElevator();
     }
-    else if (elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.L1Height + Constants.ElevatorConstants.deadband)){
+    else if (arm.GetArmEncoderPosition() < Constants.ArmConstants.armFlat && elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.L1Height + Constants.ElevatorConstants.deadband)){
       elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed);
     }
     else if (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.L1Height - Constants.ElevatorConstants.deadband)){
@@ -72,7 +72,7 @@ public class MoveToL1 extends Command {
     else if (arm.GetArmEncoderPosition() > (Constants.ArmConstants.ArmL1 - Constants.ArmConstants.deadband*3)
             &&
             arm.GetArmEncoderPosition() < Constants.ArmConstants.ArmL1 - Constants.ArmConstants.deadband){
-    arm.AutoArmMove(Constants.ArmConstants.ArmDownSpeed*0.25);
+      arm.AutoArmMove(Constants.ArmConstants.ArmDownSpeed*0.25);
     }
     else arm.StopArm();
 

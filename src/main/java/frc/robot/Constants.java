@@ -63,7 +63,7 @@ public final class Constants
 
     //Controller USB ports
     public static final int DriverUSBPort = 0;
-    public static final int PanelUSBPort = 3;
+    public static final int PanelUSBPort = 1;
     public static final int OperatorUSBPort = 2;
 
     //Panel Buttons
@@ -73,7 +73,8 @@ public final class Constants
     public static final int L4Button = 4;
     public static final int CoralStationButton = 8;
     public static final int GetCoralButton = 7;
-    public static final int TuckArmButton= 6;
+    public static final int TuckArmButton = 6;
+    public static final int ScoreCoralButton = 5;
 
   }
 
@@ -100,7 +101,7 @@ public final class Constants
     public static final double AutoUpSpeed = -.4;
     public static final double AutoDownSpeed = 0.3;
     public static final double BumpDownSpeed = 0.1;
-    public static final double HoldElevatorSpeed = -0.05;
+    public static final double HoldElevatorSpeed = 0;
 
     public static final int TransferButton = 1;
     public static final int BumpDownTestButton = 2;
@@ -121,17 +122,18 @@ public final class Constants
     public static final int armTopLimitSwitchIO = 4;
 
     public static final int AlmostUpValue = 4; //slow down when close to top
-    public static final int AlmostDownValue = 58; //slow down when close to tray at bottom
+    public static final int ScorePosition = 10; //arm value when coral is on reef
+    public static final int AlmostDownValue = 60; //slow down when close to tray at bottom
     public static final double ArmVertical = 55.5; //value of encoder when arm is vertically down at tray
-    public static final int ArmAtLoading = 72; //arm back against elevator to load from human
-    public static final int ArmL1 = 28;
+    public static final int ArmAtLoading = 70; //arm back against elevator to load from human
+    public static final int ArmL1 = 45;
     public static final int CloseSlow = 5; //when you get near the endpoint slow down
     public static final double deadband = 1.5; //arm location deadband
     public static final double SlowDown = 0.2; //slow down by 20% if close to limit
 
-    public static final double ArmDownSpeed = -0.5;
-    public static final double ArmUpSpeed = 0.5;
-    public static final double ArmUpFast = 0.8;
+    public static final double ArmDownSpeed = -0.4;
+    public static final double ArmUpSpeed = 0.4;
+    public static final double ArmUpFast = 0.5;
     public static final double armFlat = 35;
 
     public static final double GripperInSpeed = 1;
@@ -142,7 +144,11 @@ public final class Constants
 
     public static final double goSlow = .8; //slow down arm joystick input
 
-    public static final double RateLimit = 3; //arm will get to full speed in 1 / this time in seconds
+    public static final double RateLimit = 1; //arm will get to full speed in 1 / this time in seconds
+
+    public static final double WaitScore = 0.7; //time gripper spits out before backing up
+    public static final double DriveBackTime = 1.2; //time robot drives back after scoring
+    public static final double DriveBackSpeed = -0.2; //speed that robot bumps back after scoring
   }
 
 }

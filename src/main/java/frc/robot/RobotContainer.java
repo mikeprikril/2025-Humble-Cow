@@ -26,17 +26,20 @@ import frc.robot.commands.ChangePipeline;
 import frc.robot.commands.GoBackUp;
 import frc.robot.commands.ManualArmCommand;
 import frc.robot.commands.ManualElevatorCommand;
+import frc.robot.commands.MoveToL1;
 import frc.robot.commands.PickFromTrough;
+import frc.robot.commands.ScoreCoral;
 import frc.robot.commands.TrackTagLeft;
 import frc.robot.commands.TransferPosition;
 import frc.robot.commands.Tuck;
 import frc.robot.commands.AutoMode.AutoPick;
+import frc.robot.commands.AutoMode.AutoScoreCoral;
 import frc.robot.commands.AutoMode.AutoToL4;
 import frc.robot.commands.AutoMode.AutoTransferPosition;
 import frc.robot.commands.ChangeTurningCommand;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.Limelight;
+//import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -60,17 +63,19 @@ public class RobotContainer
   public static final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"swerve/neo"));
   private final ElevatorSubsystem elevator = new ElevatorSubsystem();
   private final ArmSubsytem arm = new ArmSubsytem();
-  private final Limelight limelight = new Limelight();
+  //private final Limelight limelight = new Limelight();
 
   //Commands
   private final ManualElevatorCommand manualElevator;
   private final ManualArmCommand manualArm;
   private final TransferPosition transfer;
+  private final MoveToL1 moveToL1;
   private final MoveToL2 moveToL2;
   private final MoveToL3 moveToL3;
   private final MoveToL4 moveToL4;
+  private final ScoreCoral scoreCoral;
   private final Tuck tuck;
-  private final ChangePipeline changePipeline;
+  //private final ChangePipeline changePipeline;
   private final TrackTagLeft trackLeft;
   private final PickFromTrough pick;
   private final GoBackUp moveUp;
@@ -114,19 +119,22 @@ public class RobotContainer
     NamedCommands.registerCommand("Move to L4", new AutoToL4(elevator, arm));
     NamedCommands.registerCommand("Move to Human Loading", new AutoTransferPosition(elevator, arm));
     NamedCommands.registerCommand("Grab Coral", new AutoPick(elevator, arm));
+    NamedCommands.registerCommand("Score Coral", new AutoScoreCoral(elevator, arm, drivebase));
 
     //Commands
     manualElevator = new ManualElevatorCommand(elevator, operatorXbox);
     manualArm = new ManualArmCommand(arm, operatorXbox);
 
-    changePipeline = new ChangePipeline(limelight, driverXbox);
-    trackLeft = new TrackTagLeft(limelight, drivebase, driverXbox);
+    //changePipeline = new ChangePipeline(limelight, driverXbox);
+    trackLeft = new TrackTagLeft(drivebase, driverXbox);
     changeTurning = new ChangeTurningCommand(drivebase, driverXbox);
 
     transfer = new TransferPosition(elevator, arm, panel);
+    moveToL1 = new MoveToL1(elevator, arm, panel);
     moveToL2 = new MoveToL2(elevator, arm, panel);
     moveToL3 = new MoveToL3(elevator, arm, panel);
     moveToL4 = new MoveToL4(elevator, arm, panel);
+    scoreCoral = new ScoreCoral(elevator, arm, drivebase, panel);
     tuck = new Tuck(elevator, arm, panel);
     pick = new PickFromTrough(elevator, arm, panel);
     moveUp = new GoBackUp(elevator, arm, panel);
@@ -154,7 +162,7 @@ public class RobotContainer
     drivebase.setDefaultCommand(standardDrive);
     elevator.setDefaultCommand(manualElevator);
     arm.setDefaultCommand(manualArm);
-    limelight.setDefaultCommand(changePipeline);
+    //limelight.setDefaultCommand(changePipeline);
   }
 
   private void configureBindings()
@@ -168,19 +176,14 @@ public class RobotContainer
 
       new JoystickButton(panel, Constants.OperatorConstants.CoralStationButton).onTrue(transfer);
       new JoystickButton(panel, Constants.OperatorConstants.GetCoralButton).onTrue(autoTransfer);
-      new JoystickButton(panel, Constants.OperatorConstants.TuckArmButton);
-      //new JoystickButton(panel, Constants.OperatorConstants.L1Button).onTrue(moveToL1);
+      new JoystickButton(panel, Constants.OperatorConstants.TuckArmButton).onTrue(tuck);
+      new JoystickButton(panel, Constants.OperatorConstants.ScoreCoralButton).onTrue(scoreCoral);
+      
+      new JoystickButton(panel, Constants.OperatorConstants.L1Button).onTrue(moveToL1);
       new JoystickButton(panel, Constants.OperatorConstants.L2Button).onTrue(moveToL2);
       new JoystickButton(panel, Constants.OperatorConstants.L3Button).onTrue(moveToL3);
       new JoystickButton(panel, Constants.OperatorConstants.L4Button).onTrue(moveToL4);
-      //operatorXbox.x().onTrue(transfer); //move to transfer position (human loading) when holding X
-      //operatorXbox.y().onTrue(autoTransfer); //grab coral from trough when holding Y
-      //operatorXbox.a().onTrue(moveToL4);
-      //operatorXbox.b().onTrue(moveToL3);
 
-      //operatorXbox.a().onTrue(armReady); //move arm and elevator to scoring position when holding A
-
-      //new JoystickButton(panel, 1).onTrue(transfer); //use this when we get the panel control working
 
 
   }

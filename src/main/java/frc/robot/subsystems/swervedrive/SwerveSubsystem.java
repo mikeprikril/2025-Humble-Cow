@@ -87,11 +87,11 @@ public class SwerveSubsystem extends SubsystemBase
    */
 
      //Limelight
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tid = table.getEntry("tid");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
+     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+     NetworkTableEntry tid = table.getEntry("tid");
+     NetworkTableEntry tx = table.getEntry("tx");
+     NetworkTableEntry ty = table.getEntry("ty");
+     NetworkTableEntry ta = table.getEntry("ta");
 
 
   public SwerveSubsystem(File directory)
@@ -150,10 +150,30 @@ public class SwerveSubsystem extends SubsystemBase
     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
+  public double TrackReefTagX(){
+    return tx.getDouble(0.0);
+  }
+
+  public double TrackReefTagY(){
+    return ty.getDouble(0.0);
+  }
+
+  public double TrackReefTagArea(){
+    return ta.getDouble(0.0);
+  }
+
+  public double GetTagID(){
+    return tid.getDouble(0);
+  }
+
   @Override
   public void periodic()
   {
     SmartDashboard.putNumber("Robot Heading Degrees", getHeading().getDegrees());
+    SmartDashboard.putNumber("LimeLight X Value", tx.getDouble(0.0));
+    SmartDashboard.putNumber("LimeLight Y Value", ty.getDouble(0.0));
+    SmartDashboard.putNumber("LimeLight Target Area", ta.getDouble(0.0));
+    SmartDashboard.putNumber("Reef AprilTag ID", tid.getDouble(0.0));
     
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)

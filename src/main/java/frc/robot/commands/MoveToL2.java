@@ -50,8 +50,8 @@ public class MoveToL2 extends Command {
     else if (arm.GetArmEncoderPosition() < Constants.ArmConstants.armFlat && elevator.GetElevatorEncoderPosition() > (Constants.ElevatorConstants.L2Height + Constants.ElevatorConstants.deadband)){
       elevator.AutoElevator(Constants.ElevatorConstants.AutoDownSpeed);
     }
-    else if (elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.L2Height - Constants.ElevatorConstants.deadband)){
-      elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed*.2);
+    else if (arm.GetArmEncoderPosition() < Constants.ArmConstants.armFlat && elevator.GetElevatorEncoderPosition() < (Constants.ElevatorConstants.L2Height - Constants.ElevatorConstants.deadband)){
+      elevator.AutoElevator(Constants.ElevatorConstants.AutoUpSpeed);
     }
     //else elevator.StopElevator();
     else elevator.AutoElevator(Constants.ElevatorConstants.HoldElevatorSpeed);
